@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import AppBar from 'material-ui/AppBar'
 import Paper from 'material-ui/Paper'
-import Todo from './Todo'
+import ToDo from './ToDo'
 
 const paperStyles = {
     margin: 20,
@@ -20,7 +20,7 @@ class App extends Component {
                     />
                 </div>
                 <Paper style={paperStyles}>
-                    <Todo/>
+                    <ToDo/>
                 </Paper>
             </MuiThemeProvider>
         );
