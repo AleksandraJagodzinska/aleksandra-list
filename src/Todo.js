@@ -3,6 +3,8 @@ import {database} from './firebase'
 
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import {List, ListItem} from 'material-ui/List';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ToggleCheckBox from 'material-ui/svg-icons/toggle/check-box';
@@ -32,6 +34,8 @@ class Todo extends React.Component {
     state = {
         tasks: null,
         textFromInput: '',
+        taskName:'',
+        tasksSelect:0,
     }
 
     componentWillMount() {
@@ -75,6 +79,12 @@ class Todo extends React.Component {
         this.setState({textFromInput: ''})
     }
 
+    handleTaskName = (event, value) => {
+        this.setState({taskName: value});
+    };
+
+    handleTasksSelect = (event, index, value) => this.setState({tasksSelect: value})
+
     render() {
         return (
             <div>
@@ -85,7 +95,7 @@ class Todo extends React.Component {
                     onChange={(e, value) => this.setState({textFromInput: value})}
                 />
                 <RaisedButton
-                    label={"add"}
+                    label={"Dodaj zadanie"}
                     primary={true}
                     fullWidth={true}
                     onClick={this.handleAddTask}
@@ -95,7 +105,18 @@ class Todo extends React.Component {
                     {
                         this.state.tasks
                         &&
-                        this.state.tasks.map((el) => (
+                        this.state.tasks
+                            .filter((el) => el.name.indexOf(this.state.taskName) !== -1)
+                            .filter((el) => (
+                                this.state.tasksSelect === 0 ?
+                                    true
+                                    :
+                                    this.state.tasksSelect === 1 ?
+                                        el.done===false
+                                        :
+                                        el.done===true
+                            ))
+                            .map((el) => (
                             <Task
                                 taskId={el.key}
                                 taskName={el.name}
@@ -107,6 +128,21 @@ class Todo extends React.Component {
                         ))
                     }
                 </List>
+
+                <TextField
+                    floatingLabelText="Wyszukiwanie zadania"
+                    fullWidth={true}
+                    onChange={this.handleTaskName}
+                />
+                <SelectField
+                    floatingLabelText="Zadania"
+                    value={this.state.tasksSelect}
+                    onChange={this.handleTasksSelect}
+                >
+                    <MenuItem value={0} primaryText="Wszystkie" style={{color: "#BDBDBD"}}/>
+                    <MenuItem value={1} primaryText="Do zrobienia"/>
+                    <MenuItem value={2} primaryText="Gotowe"/>
+                </SelectField>
             </div>
         )
     }

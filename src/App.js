@@ -16,7 +16,7 @@ class App extends Component {
             <MuiThemeProvider>
                 <div>
                     <AppBar
-                        title="Todo"
+                        title="Lista zadań do zrobienia"
                     />
                 </div>
                 <Paper style={paperStyles}>
